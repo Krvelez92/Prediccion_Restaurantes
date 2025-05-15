@@ -1,89 +1,87 @@
 
 # Memoria del Proyecto: MadFood
 
-## 📌 Descripción General
+## 📌 Objetivo del Proyecto
 
-**MadFood** es una aplicación interactiva construida con **Streamlit** que ayuda a descubrir la mejor ubicación para abrir un restaurante en Madrid, basándose en datos de popularidad, geolocalización y predicciones de modelos de machine learning. El proyecto combina análisis exploratorio, modelado predictivo y visualización interactiva.
+El objetivo principal de **MadFood** es proporcionar una herramienta interactiva que ayude a identificar las mejores ubicaciones para abrir un restaurante en Madrid. Se apoya en modelos de machine learning, análisis geoespacial y visualización para ofrecer recomendaciones personalizadas tanto a emprendedores como a empresas del sector restaurantero.
 
 ---
 
 ## 📁 Estructura del Proyecto
 
-- `01_Fuentes.ipynb`: Obtención de datos desde fuentes externas.
-- `02_LimpiezaEDA.ipynb`: Limpieza de datos y análisis exploratorio.
-- `03_Entrenamiento_Evaluacion.ipynb`: Entrenamiento de modelos predictivos.
-- `03_Entrenamiento_Evaluacion_Red_Neuronal.ipynb`: Versión alternativa usando redes neuronales.
-- `app copy.py`: Aplicación Streamlit que actúa como interfaz de usuario final.
-- `utils.py`: Funciones auxiliares como transformación de JSON y limpieza de texto.
+### `01_Fuentes.ipynb` – Recolección de Datos
+
+- Extracción de datos de restaurantes mediante APIs externas.
+- Geolocalización, tipos de cocina, valoraciones y más.
+- Almacenamiento en formatos estructurados para reutilización.
+
+### `02_LimpiezaEDA.ipynb` – Limpieza y Análisis Exploratorio
+
+- Normalización de texto (tildes, mayúsculas).
+- Análisis de correlaciones entre características y popularidad.
+- Visualizaciones geoespaciales de restaurantes por distrito.
+
+### `03_Entrenamiento_Evaluacion.ipynb` – Modelado Clásico
+
+- Entrenamiento de modelos como SVM y Random Forest.
+- Evaluación de rendimiento con MAE, MSE, etc.
+- Almacenamiento de modelos entrenados con `pickle`.
+
+### `03_Entrenamiento_Evaluacion_Red_Neuronal.ipynb` – Modelado Avanzado
+
+- Definición de red neuronal con `Keras`.
+- Comparación de métricas con modelos clásicos.
+- Visualización de curva de pérdida.
 
 ---
 
-## 🔍 Metodología
+## 🌐 Aplicación Streamlit – `app copy.py`
 
-### 1. Recolección de Datos (`01_Fuentes.ipynb`)
-Se accedió a APIs (como Google Places u otras) para obtener información geolocalizada de restaurantes en Madrid.
-
-### 2. Limpieza y EDA (`02_LimpiezaEDA.ipynb`)
-- Eliminación de nulos y duplicados
-- Estandarización de nombres y tipos de restaurantes
-- Análisis de correlaciones y visualización geográfica
-
-### 3. Modelado (`03_Entrenamiento_Evaluacion.ipynb`)
-- Se utilizaron modelos como SVM y Random Forest para predecir popularidad o probabilidad de éxito de un restaurante según su ubicación y características.
-- Se evaluó el rendimiento mediante métricas como F1-score y accuracy.
-- También se entrenó un modelo de red neuronal en un notebook aparte.
+- Diseño visual atractivo con HTML/CSS embebido.
+- Dos modos de uso: **Empresas** y **Autónomos**.
+- Interfaz con mapas interactivos (`folium` + `geopandas`).
+- Uso de modelos entrenados para predicción en tiempo real.
+- Navegación controlada por `st.session_state`.
 
 ---
 
-## 🧠 Arquitectura de la App (`app copy.py`)
+## 🧰 Funciones Personalizadas
 
-La aplicación se ejecuta con Streamlit e incluye dos modos de uso:
+### Archivo `utils.py`
 
-- **Empresas**: Enfocado a negocios consolidados
-- **Autónomos**: Recomendaciones personalizadas para emprendedores
+#### 🔹 `json_to_dataframe(data_entrada)`
+Convierte un diccionario JSON (por ejemplo, desde Google Places API) en un `DataFrame` con columnas: `nombre`, `id`, `lat`, `lon`. Facilita el análisis tabular de datos geolocalizados.
 
-Incluye funciones como:
-
-- Formularios para ingreso de parámetros del usuario
-- Visualización geográfica con Folium
-- Resultados basados en modelos entrenados previamente
-
-El archivo `utils.py` incluye funciones auxiliares como `json_to_dataframe` para convertir entradas JSON a DataFrames y `eliminar_acentos` para normalizar texto.
+#### 🔹 `eliminar_acentos(texto: str)`
+Elimina acentos y convierte el texto a minúsculas. Mejora la consistencia del texto al normalizar los datos de entrada para análisis posterior.
 
 ---
 
-## 🛠 Tecnologías Usadas
+### Archivo `app.py`
 
-- Python (pandas, numpy, scikit-learn, matplotlib, seaborn)
-- Streamlit
-- Folium y GeoPandas (mapas interactivos)
-- Jupyter Notebooks
-- Pickle (para guardar modelos entrenados)
+Controla la lógica de interfaz:
+
+- Presenta la pantalla inicial con encabezado e introducción.
+- Define botones que activan distintos modos (`empresas` y `autónomos`).
+- Llama funciones desde `util_streamlit.py` para mostrar formularios y procesar predicciones:
+
+#### 🔸 `mostrar_formulario_empresas()` *(en `util_streamlit.py`)*
+Formulario para negocios establecidos. Permite ingresar información detallada sobre un restaurante y devuelve recomendaciones con mapas.
+
+#### 🔸 `mostrar_formulario_user()` *(en `util_streamlit.py`)*
+Diseñado para emprendedores individuales. Ofrece zonas recomendadas con bajo nivel de competencia o alta demanda, con enfoque más simple e intuitivo.
 
 ---
 
-## 📦 Requisitos
+## 🧠 Librerías y Tecnologías Usadas
 
-```bash
-pip install -r requirements.txt
-```
+- Python, Pandas, NumPy, Scikit-learn, Keras
+- Streamlit (interfaz)
+- Folium, GeoPandas (visualización geoespacial)
+- Matplotlib, Seaborn (EDA)
+- Pickle (modelos persistentes)
 
-Contenido sugerido para `requirements.txt`:
-
-```
-pandas
-numpy
-scikit-learn
-matplotlib
-seaborn
-streamlit
-folium
-geopandas
-shapely
-requests
-```
 ---
+## ✅ Conclusión
 
-## ✨ Conclusión
-
-MadFood es una solución interactiva basada en ciencia de datos para apoyar decisiones estratégicas en el sector gastronómico. Desde la recolección de datos hasta la visualización interactiva, integra múltiples capas de análisis para facilitar la apertura de nuevos restaurantes con mayor probabilidad de éxito.
+MadFood es un ejemplo completo de cómo aplicar ciencia de datos y machine learning para resolver un problema del mundo real: encontrar la mejor ubicación para un restaurante. La arquitectura modular del proyecto, sus visualizaciones claras y su interfaz intuitiva lo convierten en una herramienta potente y fácil de usar.

@@ -493,8 +493,7 @@ def mostrar_formulario_empresas():
     # Header Pagina Principal ---------------------------------------------------------------------
     if st.sidebar.button("⬅️ Volver al menú principal"):
         st.session_state.modo = None
-        st.experimental_rerun()
-        st.stop()
+        st.rerun()
 
     st.sidebar.image(Image.open('../doc/imagenes/Streamlit_logo.png'), use_container_width=True)
 
@@ -718,8 +717,7 @@ def mostrar_formulario_user():
     # Header Pagina Principal ---------------------------------------------------------------------
     if st.sidebar.button("⬅️ Volver al menú principal"):
         st.session_state.modo = None
-        st.experimental_rerun()
-        st.stop()
+        st.rerun()
 
     st.sidebar.image(Image.open('../doc/imagenes/Streamlit_logo.png'), use_container_width=True)
 
@@ -879,8 +877,8 @@ def mostrar_formulario_user():
 
         kpi_barrios = kpi_barrios[kpi_barrios['indicador_completo']==kpi_elegido]
 
-        valor_elegido = float(kpi_barrios['valor_indicador'].values[0])
-
+        valor_raw = kpi_barrios['valor_indicador'].values[0]
+        valor_elegido = float(str(valor_raw).replace(",", "."))
         valor_formateado = f"{valor_elegido:,.0f}".replace(",", ".")
 
         st.write(f"Fun fact del barrio {barrio_elegido}: {kpi_elegido} es de {valor_formateado}.")
