@@ -1,0 +1,57 @@
+model:
+  name: SVR
+  type: sklearn.svm.SVR
+  default_params:
+    kernel: rbf
+    C: 1.0
+    gamma: scale
+    degree: 3
+    max_iter: 10000
+
+preprocessing:
+  scaler: StandardScaler  
+  possible_scalers:
+    - MinMaxScaler
+    - StandardScaler
+
+
+training:
+  test_size: 0.2
+  random_state: 42
+  cross_validation:
+    strategy: KFold
+    folds: 10
+  scoring: neg_mean_absolute_error
+
+search:
+  method: GridSearchCV
+  param_grid:
+    scaler:
+      - MinMaxScaler
+      - StandardScaler
+      
+    classifier__kernel:
+      - linear
+      - poly
+      - rbf
+    classifier__gamma:
+      - scale
+      - auto
+    classifier__degree:
+      - 2
+      - 3
+      - 4
+      - 5
+    classifier__C:
+      - 0.5
+      - 1
+      - 10
+      - 50
+      - 100
+    classifier__max_iter:
+      - 1000000
+
+paths:
+  data_input: data/processed/restaurantes.csv
+  model_output: models/final_model.pkl
+  config_file: models/model_config.yaml
